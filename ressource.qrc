@@ -1,0 +1,21 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/chart-histogram.svg</file>
+    <file>icons/room-service.svg</file>
+    <file>icons/add.svg</file>
+    <file>icons/cross-circle.svg</file>
+    <file>icons/customers.svg</file>
+    <file>icons/employee-man.svg</file>
+    <file>icons/exit.svg</file>
+    <file>icons/file-invoice-dollar.svg</file>
+    <file>icons/home.svg</file>
+    <file>icons/menu-burger.svg</file>
+    <file>icons/portrait.svg</file>
+    <file>icons/refresh.svg</file>
+    <file>icons/rotate-right.svg</file>
+    <file>icons/search.svg</file>
+    <file>icons/selling.svg</file>
+    <file>icons/settings.svg</file>
+    <file>icons/sign-in-alt.svg</file>
+  </qresource>
+</RCC>
