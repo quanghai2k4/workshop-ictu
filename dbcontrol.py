@@ -119,10 +119,11 @@ def delete_service(_id):
 #---------------------------------------------
 # check account is exist or not
 def check_acc(username, password):
-    if account.find_one({'username': username,'password': password, 'role':1}):
-        return True
-    elif account.find_one({'username': username,'password': password,'role':0}):
-        return True
-    else:
-        return False
+    try:
+        result = account.find_one({'$and': [{'username': username}, {'password': password}]})
+        if result is not None:
+            return result['role']  # Return the role
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 #---------------------------------------------
