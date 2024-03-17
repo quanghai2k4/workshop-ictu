@@ -3,7 +3,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi
 from ui.Ui_login import *
-from ui.Ui_main import *
+from ui.master import Ui_MainWindow
 from ui.order import *
 import dbcontrol
 import sys
@@ -28,10 +28,20 @@ class UI_LoginWindow(QMainWindow):
     def loginApp(self):
         username = self.uic.usernameLine.text()
         password = self.uic.passwordLine.text()
-        if dbcontrol.check_acc(username, password) == True:
+        print(f'Username: {username}, Password: {password}')  # Debug statement
+        role = dbcontrol.check_acc(username, password)
+        print(f'Role: {role}')  # Debug statement
+        if role == '1':
             stack.setCurrentWidget(mainUI)
+        elif role == '0':
+            stack.setCurrentWidget(mainUI)
+            mainUI.uic.accButton.hide()
+            mainUI.uic.employeeButton.hide()
+            mainUI.uic.accounts.hide()
+            mainUI.uic.employees.hide()
         else:
             QMessageBox.warning(self, 'Error', 'Invalid username or password')
+        # Rest of the code...
 #--------------------------------------------------------------
 
         

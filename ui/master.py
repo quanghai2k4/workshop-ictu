@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'main.ui'
+# Form implementation generated from reading ui file 'master.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -7,7 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
+import res
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -47,7 +47,7 @@ class Ui_MainWindow(object):
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.accounts = QtWidgets.QPushButton(parent=self.iconwidget)
-        self.accounts.setEnabled(False)
+        self.accounts.setEnabled(True)
         self.accounts.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/portrait.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         self.accounts.setObjectName("accounts")
         self.verticalLayout.addWidget(self.accounts)
         self.employees = QtWidgets.QPushButton(parent=self.iconwidget)
-        self.employees.setEnabled(False)
+        self.employees.setEnabled(True)
         self.employees.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/employee-man.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -158,7 +158,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.accButton = QtWidgets.QPushButton(parent=self.fullmenuwidget)
-        self.accButton.setEnabled(False)
+        self.accButton.setEnabled(True)
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap(":/icons/icons/user.ico"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.accButton.setIcon(icon8)
@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
         self.accButton.setObjectName("accButton")
         self.verticalLayout_2.addWidget(self.accButton)
         self.employeeButton = QtWidgets.QPushButton(parent=self.fullmenuwidget)
-        self.employeeButton.setEnabled(False)
+        self.employeeButton.setEnabled(True)
         icon9 = QtGui.QIcon()
         icon9.addPixmap(QtGui.QPixmap(":/icons/icons/employee-man.ico"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.employeeButton.setIcon(icon9)

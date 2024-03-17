@@ -1,3 +1,6 @@
 __pycache__
 login.ui
-main.ui
+master.ui
+employee.ui
+employee.py
+order.ui
