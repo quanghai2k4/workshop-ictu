@@ -8,12 +8,11 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-import res
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(910, 605)
+        MainWindow.resize(871, 575)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -1151,13 +1150,13 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 910, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 871, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
-        self.stackedWidget_2.setCurrentIndex(6)
+        self.stackedWidget_2.setCurrentIndex(0)
         self.menubar_app.toggled['bool'].connect(self.iconwidget.setVisible) # type: ignore
         self.menubar_app.toggled['bool'].connect(self.fullmenuwidget.setHidden) # type: ignore
         self.services.toggled['bool'].connect(self.serviceButton.setChecked) # type: ignore
