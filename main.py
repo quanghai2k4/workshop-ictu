@@ -31,9 +31,9 @@ class UI_LoginWindow(QMainWindow):
         print(f'Username: {username}, Password: {password}')  # Debug statement
         role = dbcontrol.check_acc(username, password)
         print(f'Role: {role}')  # Debug statement
-        if role == '1':
+        if role == 1:
             stack.setCurrentWidget(mainUI)
-        elif role == '0':
+        elif role == 0:
             stack.setCurrentWidget(mainUI)
             mainUI.uic.accButton.hide()
             mainUI.uic.employeeButton.hide()
