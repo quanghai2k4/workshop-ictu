@@ -1,4 +1,5 @@
 # Description: This file contains the main code for the application.
+from datetime import date
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi
@@ -31,9 +32,9 @@ class UI_LoginWindow(QMainWindow):
         print(f'Username: {username}, Password: {password}')  # Debug statement
         role = dbcontrol.check_acc(username, password)
         print(f'Role: {role}')  # Debug statement
-        if role == 1:
+        if role == 1 or role == "1":
             stack.setCurrentWidget(mainUI)
-        elif role == 0:
+        elif role == 0 or role == "0":
             stack.setCurrentWidget(mainUI)
             mainUI.uic.accButton.hide()
             mainUI.uic.employeeButton.hide()
@@ -80,8 +81,8 @@ class UI_MainWindow(QMainWindow):
         self.uic.employeeUpdate.clicked.connect(self.updateEmployee)
         self.uic.updateProduct.clicked.connect(self.updateProduct)
         self.uic.updateCus.clicked.connect(self.updateCustomer)
-        self.uic.updateOrder.clicked.connect(self.updateOrder)
-        self.uic.loadService.clicked.connect(self.updateService)
+        # self.uic.updateOrder.clicked.connect(self.updateOrder)
+        self.uic.updateService.clicked.connect(self.updateService)
 
         # Connect the load buttons to functions
         self.uic.loadAcc.clicked.connect(self.loadAcc)
@@ -145,38 +146,46 @@ class UI_MainWindow(QMainWindow):
         self.uic.stackedWidget_2.setCurrentWidget(self.uic.pageService)
 
     def showChart(self):
+        total_revenue = dbcontrol.total_revenue()
+        total_products = dbcontrol.total_products()
+        total_customers = dbcontrol.total_customers()
+        total_detail = dbcontrol.total_detail()
+        self.uic.totalOrdered.setText(str(total_detail))
+        self.uic.totalProds.setText(str(total_products))
+        self.uic.totalCustomers.setText(str(total_customers))
+        self.uic.totalAmount.setText(str(total_revenue))
         self.uic.stackedWidget_2.setCurrentWidget(self.uic.pageChart)
 
 # Update functions
     def updateAcc(self):
         username = self.uic.username.text()
         password = self.uic.password.text()
-        role = self.uic.role.text()
+        role = int(self.uic.role.text())
         dbcontrol.update_acc(username, password, role)
         self.loadAcc()
 
     def updateEmployee(self):
-        _id = self.uic.idEmployee.text()
+        _id = int(self.uic.idEmployee.text())
         name = self.uic.nameEmployee.text()
-        age = self.uic.ageEmployee.text()
+        birthday = self.uic.birthdayEmployee.text()
         sex = self.uic.sexEmployee.text()
         phone = self.uic.phoneEmployee.text()
         address = self.uic.addressEmployee.text()
         position = self.uic.position.text()
-        salary = self.uic.salary.text()
-        dbcontrol.update_employee(_id, name, age, sex, phone, address, position, salary)
+        salary = int(self.uic.salary.text())
+        dbcontrol.update_employee(_id, name, birthday, sex, phone, address, position, salary)
         self.loadEmployee()
 
     def updateProduct(self):
-        _id = self.uic.idProduct.text()
+        _id = int(self.uic.idProduct.text())
         name = self.uic.nameProduct.text()
         price = self.uic.priceProduct.text()
-        quantity = self.uic.quantity.text()
+        quantity = int(self.uic.quantity.text())
         dbcontrol.update_product(_id, name, price, quantity)
         self.loadProduct()
 
     def updateCustomer(self):
-        _id = self.uic.idCus.text()
+        _id = int(self.uic.idCus.text())
         name = self.uic.nameCus.text()
         email = self.uic.emailCus.text()
         phone = self.uic.phoneCus.text()
@@ -184,18 +193,18 @@ class UI_MainWindow(QMainWindow):
         dbcontrol.update_customer(_id, name, address, phone, email)
         self.loadCustomer()
 
-    def updateOrder(self):
-        _id = self.uic.idOrder.text()
-        customer_id = self.uic.customerID.text()
-        orderdate = self.uic.orderdate.date()
-        enddate = self.uic.enddate.date()
-        total = self.uic.total.text()
-        status = self.uic.status.text()
-        dbcontrol.update_order(_id, customer_id, orderdate, enddate, total, status)
-        self.loadOrder()
+    # def updateOrder(self):
+    #     _id = int(self.uic.idOrder.text())
+    #     customer_id = int(self.uic.customerID.text())
+    #     orderdate = self.uic.orderdate.date()
+    #     enddate = self.uic.enddate.date()
+    #     total = self.uic.total.text()
+    #     status = self.uic.status.text()
+    #     dbcontrol.update_order(_id, customer_id, orderdate, enddate, total, status)
+    #     self.loadOrder()
 
     def updateService(self):
-        _id = self.uic.idService.text()
+        _id = int(self.uic.idService.text())
         name = self.uic.nameService.text()
         price = self.uic.priceService.text()
         dbcontrol.update_service(_id, name, price)
@@ -211,13 +220,13 @@ class UI_MainWindow(QMainWindow):
     def selectEmployee(self):
         self.uic.idEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 0).text())
         self.uic.nameEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 1).text())
-        self.uic.ageEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 2).text())
-        self.uic.sexEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 3).text())
+        self.uic.sexEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 2).text())
+        self.uic.addressEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 3).text())
         self.uic.phoneEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 4).text())
-        self.uic.salary.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 5).text())
-        self.uic.addressEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 6).text())
-        self.uic.position.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 7).text())
-        self.uic.startdate.date(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 8).text())
+        self.uic.position.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 5).text())
+        self.uic.salary.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 6).text())
+        self.uic.startdate.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 7).text())
+        self.uic.birthdayEmployee.setText(self.uic.tableEmployee.item(self.uic.tableEmployee.currentRow(), 8).text())
 
     def selectProduct(self):
         self.uic.idProduct.setText(self.uic.tableProduct.item(self.uic.tableProduct.currentRow(), 0).text())
@@ -234,18 +243,16 @@ class UI_MainWindow(QMainWindow):
         self.uic.orderID.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 5).text())
 
     def selectOrder(self):
-        self.uic.orderdate.setEnabled(True)
         self.uic.idOrder.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 0).text())
-        date_string = self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 1).text()
-        date = QtCore.QDate.fromString(date_string, 'yyyy-MM-dd')
-        self.uic.orderdate.setDate(date)
+        self.uic.orderdate.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 1).text())
         self.uic.total.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 2).text())
-        #self.uic.enddate.date(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 3).text())
         self.uic.customerID.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 4).text())
         try:
-            self.uic.status.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 5).text())
+            self.uic.enddate.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 5).text())
+            self.uic.status.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 6).text())
         except:
-            self.uic.status.setText('Chưa giao hàng')
+            self.uic.enddate.setText('None')
+            self.uic.status.setText('Pending')
 
     def selectService(self):
         self.uic.idService.setText(self.uic.tableService.item(self.uic.tableService.currentRow(), 0).text())
@@ -262,7 +269,7 @@ class UI_MainWindow(QMainWindow):
     def clearEmployee(self):
         self.uic.idEmployee.clear()
         self.uic.nameEmployee.clear()
-        self.uic.ageEmployee.clear()
+        self.uic.birthdayEmployee.clear()
         self.uic.sexEmployee.clear()
         self.uic.phoneEmployee.clear()
         self.uic.salary.clear()
@@ -300,29 +307,32 @@ class UI_MainWindow(QMainWindow):
 
 # Add functions
     def addAcc(self):
+        _id = int(self.uic.idacc.text())
         username = self.uic.username.text()
         password = self.uic.password.text()
-        role = self.uic.role.text()
-        dbcontrol.insert_acc(username, password, role)
+        role = int(self.uic.role.text())
+        dbcontrol.insert_acc(_id, username, password, role)
         self.loadAcc()
 
     def addEmployee(self):
-        _id = self.uic.idEmployee.text()
+        _id = int(self.uic.idEmployee.text())
         name = self.uic.nameEmployee.text()
-        age = self.uic.ageEmployee.text()
+        birthday_text = self.uic.birthdayEmployee.text()
+        year, month, day = map(int, birthday_text.split('-'))
+        birthday = date(year, month, day)
         sex = self.uic.sexEmployee.text()
         phone = self.uic.phoneEmployee.text()
         address = self.uic.addressEmployee.text()
         position = self.uic.position.text()
-        salary = self.uic.salary.text()
-        dbcontrol.insert_employee(_id, name, age, sex, phone, address, position, salary)
+        salary = int(self.uic.salary.text())
+        dbcontrol.insert_employee(_id, name, birthday, sex, address, phone, position, salary)
         self.loadEmployee()
 
     def addProduct(self):
-        _id = self.uic.idProduct.text()
+        _id = int(self.uic.idProduct.text())
         name = self.uic.nameProduct.text()
         price = self.uic.priceProduct.text()
-        quantity = self.uic.quantity.text()
+        quantity = int(self.uic.quantity.text())
         dbcontrol.insert_product(_id, name, price, quantity)
         self.loadProduct()
 
@@ -350,13 +360,13 @@ class UI_MainWindow(QMainWindow):
         if self.uic.cb4.isChecked():
             products.append(prd4)
         _id = int(self.uic.idOrder.text())
-        customer_id = self.uic.customerID.text()
+        customer_id = int(self.uic.customerID.text())
         total = self.totalAmount()
         dbcontrol.insert_order(_id, total, products, customer_id)
         self.loadOrder()
 
     def addService(self):
-        _id = self.uic.idService.text()
+        _id = int(self.uic.idService.text())
         name = self.uic.nameService.text()
         price = self.uic.priceService.text()
         dbcontrol.insert_service(_id, name, price)
@@ -364,22 +374,22 @@ class UI_MainWindow(QMainWindow):
 
 # Delete functions
     def deleteAcc(self):
-        _id  = self.uic.idacc.text()
+        _id  = int(self.uic.idacc.text())
         dbcontrol.delete_acc(_id)
         self.loadAcc()
     
     def deleteEmployee(self):
-        _id = self.uic.idEmployee.text()
+        _id = int(self.uic.idEmployee.text())
         dbcontrol.delete_employee(_id)
         self.loadEmployee()
 
     def deleteProduct(self):
-        _id = self.uic.idProduct.text()
+        _id = int(self.uic.idProduct.text())
         dbcontrol.delete_product(_id)
         self.loadProduct()
 
     def deleteCustomer(self):
-        _id = self.uic.idCus.text()
+        _id = int(self.uic.idCus.text())
         dbcontrol.delete_customer(_id)
         self.loadCustomer()
 
@@ -389,7 +399,7 @@ class UI_MainWindow(QMainWindow):
         self.loadOrder()
 
     def deleteService(self):
-        _id = self.uic.idService.text()
+        _id = int(self.uic.idService.text())
         dbcontrol.delete_service(_id)
         self.loadService()
 

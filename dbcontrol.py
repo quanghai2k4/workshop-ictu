@@ -1,5 +1,6 @@
-import datetime
+from datetime import datetime
 import os
+from unittest import result
 import pyarrow
 import pandas
 import pymongoarrow as pma
@@ -56,22 +57,25 @@ def load_service():
 
 #---------------------------------------------
 # insert data to mongodb
-def insert_acc(username, password, role):
-    account.insert_one({'username': username, 'password': password, 'role': role})
+def insert_acc(_id, username, password, role):
+    account.insert_one({'_id': _id, 'username': username, 'password': password, 'role': role})
 
-def insert_employee(_id, name, age, sex, address, phone, position, salary):
-    employee.insert_one({'_id': _id, 'name': name, 'age': age, 'sex': sex, 'address': address, 'phone': phone, 'position': position, 'salary': salary})
+def insert_employee(_id, name, birthday, sex, address, phone, position, salary):
+    birthday = datetime.combine(birthday, datetime.min.time())
+    employee.insert_one({'_id': _id, 'name': name, 'birthday': birthday, 'sex': sex, 'address': address, 'phone number': phone, 'position': position, 'salary': salary, 'start date': datetime.now()})
 
 def insert_product(_id, name, price, quantity):
-    product.insert_one({'_id': _id, 'name': name, 'price': price, 'stock': quantity})
+    price = float(price)
+    product.insert_one({'_id': _id, 'name': name, 'price': price, 'quantity': quantity})
 
-def insert_customer(_id, name, address, phone, email):
-    customer.insert_one({'_id': _id, 'name': name, 'address': address, 'phone': phone, 'email': email})
+def insert_customer(_id, name, address, phone, email, order_id):
+    customer.insert_one({'_id': _id, 'name': name, 'address': address, 'phone number': phone, 'email': email, 'order_id': order_id})
 
 def insert_order(_id, total, products, customer_id):
-    order.insert_one({'_id': _id, 'order date': datetime.datetime.now(), 'total': total, 'detail': products, 'customer_id': customer_id, 'status': 'Pending'})
+    order.insert_one({'_id': _id, 'order date': datetime.now(), 'total': total, 'detail': products, 'customer_id': customer_id, 'status': 'Pending'})
 
 def insert_service(_id, name, price):
+    price = float(price)
     service.insert_one({'_id': _id, 'name': name, 'price': price})  
 #---------------------------------------------
     
@@ -80,8 +84,10 @@ def insert_service(_id, name, price):
 def update_acc(username, password, role):
     account.update_one({'username': username}, {'$set': {'password': password, 'role': role}})
 
-def update_employee(_id, name, age, sex, phone, address, position, salary):
-    employee.update_one({'_id': _id}, {'$set': {'name': name, 'age': age, 'sex': sex, 'phone': phone, 'address': address, 'position': position, 'salary': salary}})
+def update_employee(_id, name, birthday, sex, phone, address, position, salary):
+    birthday = datetime.strptime(birthday, "%Y-%m-%d").date()
+    birthday = datetime.combine(birthday, datetime.min.time())
+    employee.update_one({'_id': _id}, {'$set': {'name': name, 'birthday': birthday, 'sex': sex, 'phone': phone, 'address': address, 'position': position, 'salary': salary}})
 
 def update_product(_id, name, price, quantity):
     product.update_one({'_id': _id}, {'$set': {'name': name, 'price': price, 'stock': quantity}})
@@ -90,9 +96,10 @@ def update_customer(_id, name, address, phone, email):
     customer.update_one({'_id': _id}, {'$set': {'name': name, 'address': address, 'phone': phone, 'email': email}})
 
 def update_order(_id, customer_id, orderdate, enddate, detail, total, status):
-    order.update_one({'_id': _id}, {'$set': {'customer_id': customer_id, 'orderdate': orderdate, 'enddate': enddate, 'detail': detail, 'total': total, 'status': status, 'order date': datetime.datetime.now()}})
+    order.update_one({'_id': _id}, {'$set': {'customer_id': customer_id, 'orderdate': orderdate, 'enddate': enddate, 'detail': detail, 'total': total, 'status': status, 'order date': datetime.now()}})
 
 def update_service(_id, name, price):
+    price = float(price)
     service.update_one({'_id': _id}, {'$set': {'name': name, 'price': price}})
     
 #---------------------------------------------
@@ -114,6 +121,38 @@ def delete_order(_id):
 
 def delete_service(_id):
     service.delete_one({'_id': _id})
+#---------------------------------------------
+
+#---------------------------------------------
+# Functions of chart
+
+#get total revenue
+def total_revenue():
+    total = 0
+    for i in order.find():
+        total += i['total']
+    return total
+
+# get total number of products
+def total_products():
+    total = 0
+    for i in product.find():
+        total += i['quantity']
+    return total
+
+# get total of customers
+def total_customers():
+    total = 0
+    for i in customer.find():
+        total += 1
+    return total
+
+# get length of detail in order
+def total_detail():
+    total = 0
+    for i in order.find():
+        total += len(i['detail'])
+    return total
 #---------------------------------------------
 
 #---------------------------------------------
