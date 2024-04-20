@@ -68,8 +68,8 @@ def insert_product(_id, name, price, quantity):
 def insert_customer(_id, name, address, phone, email):
     customer.insert_one({'_id': _id, 'name': name, 'address': address, 'phone': phone, 'email': email})
 
-def insert_order(_id, customer_id, products, total):
-    order.insert_one({'_id': _id, 'customer_id': customer_id, 'product_id': [products], 'total': total})
+def insert_order(_id, total, products, customer_id):
+    order.insert_one({'_id': _id, 'order date': datetime.datetime.now(), 'total': total, 'detail': products, 'customer_id': customer_id, 'status': 'Pending'})
 
 def insert_service(_id, name, price):
     service.insert_one({'_id': _id, 'name': name, 'price': price})  

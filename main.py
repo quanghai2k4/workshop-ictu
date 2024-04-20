@@ -4,9 +4,9 @@ from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi
 from ui.Ui_login import *
 from ui.master import Ui_MainWindow
-from ui.order import *
 import dbcontrol
 import sys
+from PyQt6 import uic
 
 # Create the application
 app = QApplication(sys.argv)
@@ -104,8 +104,10 @@ class UI_MainWindow(QMainWindow):
         self.uic.addEmployee.clicked.connect(self.addEmployee)
         self.uic.addProduct.clicked.connect(self.addProduct)
         self.uic.addCus.clicked.connect(self.addCustomer)
-        self.uic.addOrder.clicked.connect(self.openOrder)
+        self.uic.addOrder.clicked.connect(self.addOrder)
         self.uic.addService.clicked.connect(self.addService)
+        # ok button
+        self.uic.ok_button.clicked.connect(self.totalAmount)
 
         # Connect the delete buttons to functions
         self.uic.delAcc.clicked.connect(self.deleteAcc)
@@ -232,12 +234,18 @@ class UI_MainWindow(QMainWindow):
         self.uic.orderID.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 5).text())
 
     def selectOrder(self):
+        self.uic.orderdate.setEnabled(True)
         self.uic.idOrder.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 0).text())
-        self.uic.customerID.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 1).text())
-        self.uic.orderdate.date(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 2).text())
-        self.uic.enddate.date(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 3).text())
-        self.uic.total.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 4).text())
-        self.uic.status.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 5).text())
+        date_string = self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 1).text()
+        date = QtCore.QDate.fromString(date_string, 'yyyy-MM-dd')
+        self.uic.orderdate.setDate(date)
+        self.uic.total.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 2).text())
+        #self.uic.enddate.date(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 3).text())
+        self.uic.customerID.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 4).text())
+        try:
+            self.uic.status.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 5).text())
+        except:
+            self.uic.status.setText('Chưa giao hàng')
 
     def selectService(self):
         self.uic.idService.setText(self.uic.tableService.item(self.uic.tableService.currentRow(), 0).text())
@@ -327,6 +335,26 @@ class UI_MainWindow(QMainWindow):
         dbcontrol.insert_customer(_id, name, address, phone, email)
         self.loadCustomer()
 
+    def addOrder(self):
+        prd1 = self.uic.cb1.text()
+        prd2 = self.uic.cb2.text()
+        prd3 = self.uic.cb3.text()
+        prd4 = self.uic.cb4.text()
+        products = []
+        if self.uic.cb1.isChecked():
+            products.append(prd1)
+        if self.uic.cb2.isChecked():
+            products.append(prd2)
+        if self.uic.cb3.isChecked():
+            products.append(prd3)
+        if self.uic.cb4.isChecked():
+            products.append(prd4)
+        _id = int(self.uic.idOrder.text())
+        customer_id = self.uic.customerID.text()
+        total = self.totalAmount()
+        dbcontrol.insert_order(_id, total, products, customer_id)
+        self.loadOrder()
+
     def addService(self):
         _id = self.uic.idService.text()
         name = self.uic.nameService.text()
@@ -356,7 +384,7 @@ class UI_MainWindow(QMainWindow):
         self.loadCustomer()
 
     def deleteOrder(self):
-        _id = self.uic.idOrder.text()
+        _id = int(self.uic.idOrder.text())
         dbcontrol.delete_order(_id)
         self.loadOrder()
 
@@ -453,13 +481,24 @@ class UI_MainWindow(QMainWindow):
                 table_item = QTableWidgetItem(str(df.iat[row, column]))
                 self.uic.tableService.setItem(row, column, table_item)
 
-# Open the order window
-    def openOrder(self):
-        self.order = Ui_Order()
-        self.order.show()
 #--------------------------------------------------------------
-                
-
+# Define the checkbox function
+    def totalAmount(self):
+        total = 0
+        prc1 = self.uic.pr1.text()
+        prc2 = self.uic.pr2.text()
+        prc3 = self.uic.pr3.text()
+        prc4 = self.uic.pr4.text()
+        if self.uic.cb1.isChecked():
+            total += float(prc1)
+        if self.uic.cb2.isChecked():
+            total += float(prc2)
+        if self.uic.cb3.isChecked():
+            total += float(prc3)
+        if self.uic.cb4.isChecked():
+            total += float(prc4)
+        self.uic.total_4.setText(str(total))
+        return total
 
 # Create instances of the UI classes
 loginUI = UI_LoginWindow()
