@@ -15,7 +15,7 @@ load_dotenv(find_dotenv())
 patch_all()
 
 # Connect to MongoDB
-connstr = os.environ.get("CONNSTR")
+connstr = os.environ.get("ATLAS_URI")
 client = MongoClient(connstr)
 wood = client.wood
 # Create collections
