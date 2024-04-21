@@ -1,4 +1,5 @@
 # Description: This file contains the main code for the application.
+from calendar import c
 from datetime import date
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import *
@@ -109,6 +110,8 @@ class UI_MainWindow(QMainWindow):
         self.uic.addService.clicked.connect(self.addService)
         # ok button
         self.uic.ok_button.clicked.connect(self.totalAmount)
+        # cancel button
+        self.uic.cancel_button.clicked.connect(self.clearSelect)
 
         # Connect the delete buttons to functions
         self.uic.delAcc.clicked.connect(self.deleteAcc)
@@ -244,14 +247,14 @@ class UI_MainWindow(QMainWindow):
 
     def selectOrder(self):
         self.uic.idOrder.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 0).text())
-        self.uic.orderdate.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 1).text())
+        # self.uic.orderdate.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 1).text())
+        self.uic.address.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 6).text())
         self.uic.total.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 2).text())
+        self.uic.detail.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 3).text())
         self.uic.customerID.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 4).text())
         try:
-            self.uic.enddate.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 5).text())
-            self.uic.status.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 6).text())
+            self.uic.status.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 5).text())
         except:
-            self.uic.enddate.setText('None')
             self.uic.status.setText('Pending')
 
     def selectService(self):
@@ -294,8 +297,9 @@ class UI_MainWindow(QMainWindow):
     def clearOrder(self):
         self.uic.idOrder.clear()
         self.uic.customerID.clear()
-        self.uic.orderdate.clear()
-        self.uic.enddate.clear()
+        # self.uic.orderdate.clear()
+        self.uic.address.clear()
+        self.uic.detail.clear()
         self.uic.total.clear()
         self.uic.status.clear()
 
@@ -303,6 +307,17 @@ class UI_MainWindow(QMainWindow):
         self.uic.idService.clear()
         self.uic.nameService.clear()
         self.uic.priceService.clear()
+
+    def clearSelect(self):
+        self.uic.sl1.clear()
+        self.uic.sl2.clear()
+        self.uic.sl3.clear()
+        self.uic.sl4.clear()
+        self.uic.total_4.clear()
+        self.uic.cb1.setChecked(False)
+        self.uic.cb2.setChecked(False)
+        self.uic.cb3.setChecked(False)
+        self.uic.cb4.setChecked(False)
 
 
 # Add functions
@@ -337,7 +352,7 @@ class UI_MainWindow(QMainWindow):
         self.loadProduct()
 
     def addCustomer(self):
-        _id = self.uic.idCus.text()
+        _id = int(self.uic.idCus.text())
         name = self.uic.nameCus.text()
         email = self.uic.emailCus.text()
         phone = self.uic.phoneCus.text()
@@ -361,8 +376,9 @@ class UI_MainWindow(QMainWindow):
             products.append(prd4)
         _id = int(self.uic.idOrder.text())
         customer_id = int(self.uic.customerID.text())
+        address = self.uic.address.text()
         total = self.totalAmount()
-        dbcontrol.insert_order(_id, total, products, customer_id)
+        dbcontrol.insert_order(_id, address, total, products, customer_id)
         self.loadOrder()
 
     def addService(self):
@@ -495,19 +511,24 @@ class UI_MainWindow(QMainWindow):
 # Define the checkbox function
     def totalAmount(self):
         total = 0
-        prc1 = self.uic.pr1.text()
-        prc2 = self.uic.pr2.text()
-        prc3 = self.uic.pr3.text()
-        prc4 = self.uic.pr4.text()
+        sl1 = int(self.uic.sl1.text())
+        sl2 = int(self.uic.sl2.text())
+        sl3 = int(self.uic.sl3.text())
+        sl4 = int(self.uic.sl4.text())
+        prc1 = dbcontrol.get_price_product(self.uic.cb1.text())
+        prc2 = dbcontrol.get_price_product(self.uic.cb2.text())
+        prc3 = dbcontrol.get_price_product(self.uic.cb3.text())
+        prc4 = dbcontrol.get_price_product(self.uic.cb4.text())
         if self.uic.cb1.isChecked():
-            total += float(prc1)
+            total += sl1 * float(prc1)
         if self.uic.cb2.isChecked():
-            total += float(prc2)
+            total += sl2 * float(prc2)
         if self.uic.cb3.isChecked():
-            total += float(prc3)
+            total += sl3 * float(prc3)
         if self.uic.cb4.isChecked():
-            total += float(prc4)
+            total += sl4 * float(prc4)
         self.uic.total_4.setText(str(total))
+        self.uic.total.setText(str(total))
         return total
 
 # Create instances of the UI classes

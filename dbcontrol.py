@@ -68,11 +68,11 @@ def insert_product(_id, name, price, quantity):
     price = float(price)
     product.insert_one({'_id': _id, 'name': name, 'price': price, 'quantity': quantity})
 
-def insert_customer(_id, name, address, phone, email, order_id):
-    customer.insert_one({'_id': _id, 'name': name, 'address': address, 'phone number': phone, 'email': email, 'order_id': order_id})
+def insert_customer(_id, name, address, phone, email):
+    customer.insert_one({'_id': _id, 'name': name, 'address': address, 'phone number': phone, 'email': email})
 
-def insert_order(_id, total, products, customer_id):
-    order.insert_one({'_id': _id, 'order date': datetime.now(), 'total': total, 'detail': products, 'customer_id': customer_id, 'status': 'Pending'})
+def insert_order(_id, address, total, products, customer_id):
+    order.insert_one({'_id': _id, 'address': address, 'order date': datetime.now(), 'total': total, 'detail': products, 'customer_id': customer_id, 'status': 'Pending'})
 
 def insert_service(_id, name, price):
     price = float(price)
@@ -153,6 +153,18 @@ def total_detail():
     for i in order.find():
         total += len(i['detail'])
     return total
+#---------------------------------------------
+
+#---------------------------------------------
+# get price of product
+def get_price_product(name):
+    result = product.find_one({'name': name})
+    if result is not None:
+        return result['price']
+    else:
+        return 0
+    
+
 #---------------------------------------------
 
 #---------------------------------------------
