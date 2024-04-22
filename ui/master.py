@@ -7,7 +7,7 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-import res
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -572,24 +572,18 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setHorizontalSpacing(30)
         self.gridLayout_5.setVerticalSpacing(10)
         self.gridLayout_5.setObjectName("gridLayout_5")
-        self.idCus = QtWidgets.QLineEdit(parent=self.frame_7)
-        self.idCus.setObjectName("idCus")
-        self.gridLayout_5.addWidget(self.idCus, 0, 1, 1, 2)
         self.label_22 = QtWidgets.QLabel(parent=self.frame_7)
         self.label_22.setObjectName("label_22")
         self.gridLayout_5.addWidget(self.label_22, 1, 0, 1, 1)
-        self.orderID = QtWidgets.QLineEdit(parent=self.frame_7)
-        self.orderID.setObjectName("orderID")
-        self.gridLayout_5.addWidget(self.orderID, 2, 1, 1, 2)
         self.label_23 = QtWidgets.QLabel(parent=self.frame_7)
         self.label_23.setObjectName("label_23")
         self.gridLayout_5.addWidget(self.label_23, 0, 0, 1, 1)
+        self.idCus = QtWidgets.QLineEdit(parent=self.frame_7)
+        self.idCus.setObjectName("idCus")
+        self.gridLayout_5.addWidget(self.idCus, 0, 1, 1, 2)
         self.nameCus = QtWidgets.QLineEdit(parent=self.frame_7)
         self.nameCus.setObjectName("nameCus")
         self.gridLayout_5.addWidget(self.nameCus, 1, 1, 1, 2)
-        self.label_24 = QtWidgets.QLabel(parent=self.frame_7)
-        self.label_24.setObjectName("label_24")
-        self.gridLayout_5.addWidget(self.label_24, 2, 0, 1, 1)
         self.gridLayout_19.addLayout(self.gridLayout_5, 0, 0, 1, 1)
         self.gridLayout_20 = QtWidgets.QGridLayout()
         self.gridLayout_20.setContentsMargins(30, -1, 30, -1)
@@ -1265,7 +1259,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
-        self.stackedWidget_2.setCurrentIndex(3)
+        self.stackedWidget_2.setCurrentIndex(0)
         self.menubar_app.toggled['bool'].connect(self.iconwidget.setVisible) # type: ignore
         self.menubar_app.toggled['bool'].connect(self.fullmenuwidget.setHidden) # type: ignore
         self.services.toggled['bool'].connect(self.serviceButton.setChecked) # type: ignore
@@ -1351,7 +1345,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Ngày sinh"))
         self.label_22.setText(_translate("MainWindow", "Tên khách"))
         self.label_23.setText(_translate("MainWindow", "Mã khách hàng"))
-        self.label_24.setText(_translate("MainWindow", "Mã đơn hàng"))
         self.label_25.setText(_translate("MainWindow", "Số điện thoại"))
         self.label_26.setText(_translate("MainWindow", "Địa chỉ"))
         self.label_27.setText(_translate("MainWindow", "Email"))

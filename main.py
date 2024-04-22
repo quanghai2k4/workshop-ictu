@@ -243,7 +243,7 @@ class UI_MainWindow(QMainWindow):
         self.uic.emailCus.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 2).text())
         self.uic.phoneCus.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 3).text())
         self.uic.addressCus.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 4).text())
-        self.uic.orderID.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 5).text())
+        # self.uic.orderID.setText(self.uic.tableCus.item(self.uic.tableCus.currentRow(), 5).text())
 
     def selectOrder(self):
         self.uic.idOrder.setText(self.uic.tableOrder.item(self.uic.tableOrder.currentRow(), 0).text())
@@ -292,7 +292,6 @@ class UI_MainWindow(QMainWindow):
         self.uic.emailCus.clear()
         self.uic.phoneCus.clear()
         self.uic.addressCus.clear()
-        self.uic.orderID.clear()
 
     def clearOrder(self):
         self.uic.idOrder.clear()
